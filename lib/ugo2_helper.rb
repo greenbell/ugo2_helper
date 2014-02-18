@@ -1,17 +1,15 @@
+# encoding: utf-8
+
 require 'uri'
 
 module Ugo2Helper
-  def phpurlencode(str)
-    URI.encode(str, /[^a-zA-Z\d\-\_\.]/n)
-  end
-
   def make_ugo2_image_url(server, user, hash, title, options={})
     options = ugo2_default_options.merge(options)
     ut = options[:ut].to_s
     ch = options[:ch]
 
     result =  "http://#{server}/?u=#{user}&h=#{hash}&guid=ON&ut=#{ut}"
-    result += "&qM=#{phpurlencode(request.referer ? request.referer : '')}|AzR|#{request.port.to_s}|#{phpurlencode(request.host.to_s)}|#{phpurlencode(request.request_uri.to_s)}|Y|"
+    result += "&qM=#{phpurlencode(request.referer ? request.referer : '')}|AzR|#{request.port.to_s}|#{phpurlencode(request.host.to_s)}|#{phpurlencode(request.fullpath.to_s)}|Y|"
     result += "&ch=#{ch}"
     result += "&sb=#{phpurlencode(title)}"
 
@@ -38,4 +36,12 @@ module Ugo2Helper
       :ch => "UTF-8"
     }
   end
+
+private
+
+  def phpurlencode(str)
+    URI.encode(str, /[^a-zA-Z\d\-\_\.]/)
+  end
 end
+
+ActionView::Base.send(:include, Ugo2Helper)

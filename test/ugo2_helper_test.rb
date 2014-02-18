@@ -1,15 +1,8 @@
 require 'test_helper'
-gem "actionpack"
-require 'action_controller'
-require 'action_controller/test_process'
-require File.expand_path(File.dirname(__FILE__) + "/../lib/ugo2_helper")
 
-class Ugo2HelperTest < ActiveSupport::TestCase
-  include ActionView::Helpers
-  include Ugo2Helper
-
+class Ugo2HelperTest < ActionView::TestCase
   def setup
-    @request ||= ActionController::TestRequest.new
+    request.path = '/'
   end
 
   test "phpurlencode" do
